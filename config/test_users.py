@@ -8,7 +8,7 @@ TEST_USERS = {
         "password": "Senha@123"
     },
     "multiple_products": {
-        "username": "22222222222",
-        "password": "Senha@123"
+        "username": "33430151562",
+        "password": "Claro@122"
     }
 }

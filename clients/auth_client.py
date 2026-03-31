@@ -9,7 +9,10 @@ class AuthClient:
         self.session = requests.Session()
         self.base_auth = config["auth_url"]
 
-    def get_token(self):
+    def get_token(self,username=None, password=None):
+
+        username = username or config["username"]
+        password = password or config["password"]
 
         #Limpa os cookies antes de iniciar o processo de autenticação
         print("LIMPANDO COOKIES...")
@@ -52,8 +55,8 @@ class AuthClient:
         url = f"{self.base_auth}/pf-ws/authn/flows/{flow_id}"
 
         payload = {
-            "username": config["username"],
-            "password": config["password"]
+            "username": username,
+            "password": password
         }
 
         headers = {

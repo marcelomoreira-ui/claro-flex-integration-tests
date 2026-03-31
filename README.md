@@ -1,115 +1,106 @@
 📄 README.md
-# Claro Flex Integration Tests
+# Claro Flex - Integration Tests
 
-Automated integration test suite for Claro Flex platform APIs.
+Projeto de automação de testes de integração para a nova plataforma Claro Flex.
 
-This project validates authentication flow (OAuth + PKCE), API responses, and contract/schema using Python and pytest.
+## 📌 Objetivo
 
----
+Garantir a qualidade das APIs através de:
 
-## 🚀 Tech Stack
-
-- Python 3.x
-- Pytest
-- Requests
-- JSONSchema (contract validation)
+- Validação de status codes
+- Validação de contrato (schema)
+- Testes baseados em fluxos reais (Auth + APIs)
+- Suporte a múltiplos ambientes (local, SIT, sanity)
 
 ---
 
-## 📁 Project Structure
+## 🧱 Estrutura do Projeto
 
 
-claro-flex-integration-tests/
-│
-├── config/ # Environment configurations
-├── fixtures/ # Pytest fixtures (auth, test data)
-├── clients/ # API clients (auth, menu, etc.)
-├── utils/ # Helpers (PKCE, request utils)
-├── tests/ # Test cases
-│
-├── pytest.ini
-├── conftest.py
-└── requirements.txt
+.
+├── config/ # Configurações e ambientes
+├── fixtures/ # Fixtures do pytest (auth, dados, schemas)
+├── clients/ # Clients para chamadas de API
+├── utils/ # Utilitários (PKCE, helpers, etc)
+├── tests/ # Casos de teste
+├── pytest.ini # Configuração do pytest
+├── conftest.py # Registro global de fixtures
+└── requirements.txt # Dependências do projeto
 
 
 ---
 
-## ⚙️ Environment Configuration
+## ⚙️ Pré-requisitos
 
-Tests support multiple environments:
+- Python 3.9+
+- pip
+- Virtualenv
 
-- `local`
-- `sit`
-- `sanity`
+---
 
-Each environment must have its own config file:
+## 🚀 Setup do Projeto
 
+### 1. Criar ambiente virtual
 
-config/environments/env.<env>.json
-
-
-Example:
-
-```json
-{
-  "base_url": "",
-  "auth_url": "",
-  "client_id": "",
-  "username": "",
-  "password": ""
-}
-
-⚠️ Do not commit real credentials
-
-▶️ Running Tests
-1. Create virtual environment
+```bash
 python3 -m venv venv
-source venv/bin/activate
-2. Install dependencies
+source venv/bin/activate  # Linux / Mac
+2. Instalar dependências
 pip install -r requirements.txt
-3. Set environment
+🌍 Configuração de Ambiente
+
+Os ambientes estão em:
+
+config/environments/
+
+Exemplos:
+
+env.local.json
+env.sit.json
+env.sanity.json
+
+Selecione o ambiente via variável:
+
 export ENV=sit
-4. Run tests
-pytest -m integration -v
-🔐 Authentication Flow
+▶️ Execução dos Testes
+pytest -m integration
 
-The project implements OAuth with PKCE:
+Ou usando script:
 
-Generate PKCE (code_verifier / code_challenge)
-Retrieve flowId
-Authenticate user (username/password)
-Exchange authorization code for access token
+./run.sh
+🔐 Autenticação
 
-Token is reused via pytest fixtures.
+O projeto implementa fluxo completo de autenticação com:
 
-🧪 Test Strategy
+PKCE
+PingFederate
+Token dinâmico
 
-Tests are organized into:
+O token é gerado automaticamente via fixture.
 
-Status validation (HTTP responses)
-Contract validation (JSON schema)
-Functional scenarios (based on user profiles)
-👥 Test Data Strategy
-Default user from environment config
-Multiple user profiles supported via fixtures
-Dynamic data retrieved from authentication flow
-📌 Best Practices
-Avoid hardcoded test data
-Use fixtures for shared setup
-Keep tests independent
-Validate only relevant fields in schema
-Never commit sensitive data
-🚀 Future Improvements
-Token caching and refresh
-CI/CD pipeline integration
-Parallel test execution
-Contract testing with Pact
-Test reporting (Allure)
-🤝 Contributing
-Create a new branch
-Implement tests following project patterns
-Run tests locally
-Submit pull request
-📄 License
+🧪 Tipos de Teste
+✔ Status Code
 
-Internal use only
+Valida retorno esperado da API.
+
+✔ Contract / Schema
+
+Validação de estrutura da resposta utilizando jsonschema.
+
+👥 Testes com múltiplos usuários
+
+Usuários de teste ficam em:
+
+config/test_users.py
+
+Permite simular diferentes cenários de negócio.
+
+🧠 Boas práticas adotadas
+Uso de fixtures do pytest
+Separação por responsabilidade (clients, utils, tests)
+Configuração por ambiente
+Reuso de autenticação
+Código desacoplado e escalável
+⚠️ Segurança
+Credenciais NÃO devem ser versionadas
+Arquivos sensíveis estão no .gitignore
