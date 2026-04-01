@@ -1,9 +1,12 @@
 import requests
 from config.settings import config
 from utils.pkce_generator import generate_pkce
+from utils.logger import get_logger
 
 
 class AuthClient:
+
+    logger = get_logger(__name__)
 
     def __init__(self):
         self.session = requests.Session()
@@ -12,7 +15,7 @@ class AuthClient:
     def get_token(self):
 
         #Limpa os cookies antes de iniciar o processo de autenticação
-        print("LIMPANDO COOKIES...")
+        self.logger.info("🔐 Auth started")
         self.session.cookies.clear()
 
         # DEBUG
@@ -36,17 +39,16 @@ class AuthClient:
 
         response = self.session.get(url, params=params)
 
-        # DEBUG
-        print("STEP 1 - Flow ID - OK")
-        # print("Status:", response.status_code)
-        # print("Response:", response.text)
+        self.logger.info("✔ STEP 1 - Flow ID")
+        self.logger.debug("Status: %d", response.status_code)
+        self.logger.debug("Response: %s", response.text)
 
         response.raise_for_status()
 
         flow_id = response.json()["id"]
 
         # DEBUG (adicione isso)
-        # print("Cookies:", self.session.cookies.get_dict())
+        self.logger.debug("Cookies: %s", self.session.cookies.get_dict())
 
         # Step 2 - Authorization Code
         url = f"{self.base_auth}/pf-ws/authn/flows/{flow_id}"
@@ -62,10 +64,11 @@ class AuthClient:
         }
 
         response = self.session.post(url, json=payload, headers=headers)
+
         # DEBUG
-        print("STEP 2 - Authorization Code - OK")
-        # print("Status:", response.status_code)
-        # print("Response:", response.text)
+        self.logger.info("✔ STEP 2 - Authorization Code")
+        self.logger.debug("Status: %d", response.status_code)
+        self.logger.debug("Response: %s", response.text)
         response.raise_for_status()
 
         code = response.json()["authorizeResponse"]["code"]
@@ -93,10 +96,11 @@ class AuthClient:
         }
 
         response = self.session.post(url, json=payload, headers=headers)
+
         # DEBUG
-        print("STEP 3 - Exchange for token - OK")
-        # print("Status:", response.status_code)
-        # print("Response:", response.text)
+        self.logger.info("✔ STEP 3 - Token generated")
+        self.logger.debug("Status: %d", response.status_code)
+        self.logger.debug("Response: %s", response.text)
         response.raise_for_status()
 
         token = response.headers.get("x-access-token")
