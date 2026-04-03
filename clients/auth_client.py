@@ -3,7 +3,6 @@ from config.settings import config
 from utils.pkce_generator import generate_pkce
 from utils.logger import get_logger
 
-
 class AuthClient:
 
     logger = get_logger(__name__)
