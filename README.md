@@ -1,106 +1,140 @@
 📄 README.md
-# Claro Flex - Integration Tests
+# Claro Flex Integration Tests
 
-Projeto de automação de testes de integração para a nova plataforma Claro Flex.
+This project contains automated integration tests for the Claro Flex platform APIs. It ensures API quality through status code validation, schema validation, and real-world flow testing with authentication.
 
-## 📌 Objetivo
+## Prerequisites
 
-Garantir a qualidade das APIs através de:
+- Python 3.9 or higher
+- pip (Python package installer)
+- Virtualenv (for creating isolated Python environments)
 
-- Validação de status codes
-- Validação de contrato (schema)
-- Testes baseados em fluxos reais (Auth + APIs)
-- Suporte a múltiplos ambientes (local, SIT, sanity)
+## Project Setup
 
----
+### 1. Clone the Repository
 
-## 🧱 Estrutura do Projeto
+Clone this repository to your local machine.
 
+### 2. Create a Virtual Environment
 
-.
-├── config/ # Configurações e ambientes
-├── fixtures/ # Fixtures do pytest (auth, dados, schemas)
-├── clients/ # Clients para chamadas de API
-├── utils/ # Utilitários (PKCE, helpers, etc)
-├── tests/ # Casos de teste
-├── pytest.ini # Configuração do pytest
-├── conftest.py # Registro global de fixtures
-└── requirements.txt # Dependências do projeto
-
-
----
-
-## ⚙️ Pré-requisitos
-
-- Python 3.9+
-- pip
-- Virtualenv
-
----
-
-## 🚀 Setup do Projeto
-
-### 1. Criar ambiente virtual
+Create and activate a virtual environment to isolate dependencies:
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate  # Linux / Mac
-2. Instalar dependências
+source venv/bin/activate  # On macOS/Linux
+# On Windows: venv\Scripts\activate
+```
+
+### 3. Install Dependencies
+
+Install the required Python packages:
+
+```bash
 pip install -r requirements.txt
-🌍 Configuração de Ambiente
+```
 
-Os ambientes estão em:
+### 4. Configure Environment
 
-config/environments/
+Copy the example environment file and update it with your credentials:
 
-Exemplos:
+```bash
+cp config/environments/env.example.json config/environments/env.local.json
+```
 
-env.local.json
-env.sit.json
-env.sanity.json
+Edit `config/environments/env.local.json` with the actual values for your local environment:
 
-Selecione o ambiente via variável:
+```json
+{
+  "base_url": "https://your-api-base-url.com",
+  "auth_url": "https://your-auth-url.com",
+  "client_id": "your-client-id",
+  "username": "your-username",
+  "password": "your-password"
+}
+```
 
-export ENV=sit
-▶️ Execução dos Testes
-pytest -m integration
+The project supports multiple environments: `local`, `sit`, `sanity`. Set the environment using the `ENV` variable (defaults to `local`).
 
-Ou usando script:
+## Running Tests
 
+### Basic Test Run
+
+To run all integration tests:
+
+```bash
+pytest
+```
+
+### Run with Specific Environment
+
+Set the environment variable and run:
+
+```bash
+export ENV=sit  # or 'sanity', 'local'
+pytest
+```
+
+### Using the Run Script
+
+The `run.sh` script sets the environment to `sit` and runs integration tests:
+
+```bash
 ./run.sh
-🔐 Autenticação
+```
 
-O projeto implementa fluxo completo de autenticação com:
+### Test Markers
 
-PKCE
-PingFederate
-Token dinâmico
+- Use `-m integration` to run only integration tests.
+- Use `-m building` for building-related tests.
 
-O token é gerado automaticamente via fixture.
+Example:
 
-🧪 Tipos de Teste
-✔ Status Code
+```bash
+pytest -m integration -v
+```
 
-Valida retorno esperado da API.
+### Verbose Output
 
-✔ Contract / Schema
+Tests run with verbose output (`-v`) and logging enabled. Check the console for detailed logs.
 
-Validação de estrutura da resposta utilizando jsonschema.
+## Project Structure
 
-👥 Testes com múltiplos usuários
+- `clients/`: API client classes for making HTTP requests (e.g., `auth_client.py`, `menu_client.py`).
+- `config/`: Configuration files and environment settings.
+  - `environments/`: JSON files for different environments.
+  - `test_users.py`: Test user credentials for different scenarios.
+- `fixtures/`: Pytest fixtures for authentication, data setup, and schemas.
+- `helper/`: Helper functions for assertions and data extraction (e.g., `menu_helper.py`).
+- `tests/`: Test case files (e.g., `test_menu.py`).
+- `utils/`: Utility modules like logging, PKCE generator, and request helpers.
+- `conftest.py`: Global pytest configuration and fixture registration.
+- `pytest.ini`: Pytest settings.
+- `requirements.txt`: Python dependencies.
+- `run.sh`: Shell script for running tests in SIT environment.
 
-Usuários de teste ficam em:
+## Key Concepts
 
-config/test_users.py
+### Authentication
 
-Permite simular diferentes cenários de negócio.
+The tests use PKCE (Proof Key for Code Exchange) flow with PingFederate for dynamic token generation. Authentication is handled automatically via fixtures.
 
-🧠 Boas práticas adotadas
-Uso de fixtures do pytest
-Separação por responsabilidade (clients, utils, tests)
-Configuração por ambiente
-Reuso de autenticação
-Código desacoplado e escalável
-⚠️ Segurança
-Credenciais NÃO devem ser versionadas
-Arquivos sensíveis estão no .gitignore
+### Schema Validation
+
+Responses are validated against JSON schemas using `jsonschema` to ensure contract compliance.
+
+### Multi-User Testing
+
+Different test users simulate various business scenarios (e.g., users with multiple products, no products, mobile-only).
+
+### Logging
+
+Logs are configured to show INFO level messages in the console for debugging.
+
+## Contributing
+
+1. Write tests in the `tests/` directory.
+2. Use fixtures from `fixtures/` for setup.
+3. Follow the existing structure and naming conventions.
+4. Run tests locally before committing.
+
+For questions, refer to the code comments or contact the team.

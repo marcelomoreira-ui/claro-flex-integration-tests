@@ -3,7 +3,6 @@ from config.settings import config
 from utils.pkce_generator import generate_pkce
 from utils.logger import get_logger
 
-
 class AuthClient:
 
     logger = get_logger(__name__)
@@ -18,7 +17,8 @@ class AuthClient:
         password = password or config["password"]
 
         #Limpa os cookies antes de iniciar o processo de autenticação
-        self.logger.info("🔐 Auth started")
+        self.logger.info(" ")
+        self.logger.info("🔐 Starting authentication process")
         self.session.cookies.clear()
 
         # DEBUG
@@ -42,7 +42,7 @@ class AuthClient:
 
         response = self.session.get(url, params=params)
 
-        self.logger.info("✔ STEP 1 - Flow ID")
+        self.logger.debug("✔ Flow ID")
         self.logger.debug("Status: %d", response.status_code)
         self.logger.debug("Response: %s", response.text)
 
@@ -69,7 +69,7 @@ class AuthClient:
         response = self.session.post(url, json=payload, headers=headers)
 
         # DEBUG
-        self.logger.info("✔ STEP 2 - Authorization Code")
+        self.logger.debug("✔ Authorization Code")
         self.logger.debug("Status: %d", response.status_code)
         self.logger.debug("Response: %s", response.text)
         response.raise_for_status()
@@ -101,7 +101,7 @@ class AuthClient:
         response = self.session.post(url, json=payload, headers=headers)
 
         # DEBUG
-        self.logger.info("✔ STEP 3 - Token generated")
+        self.logger.info("✔ Finished authentication process")
         self.logger.debug("Status: %d", response.status_code)
         self.logger.debug("Response: %s", response.text)
         response.raise_for_status()
