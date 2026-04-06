@@ -1,5 +1,5 @@
 TEST_USERS = {
-    "default": {
+        "default": {
         "username": "99978004009",
         "password": "Claro@122"
     },
@@ -9,6 +9,10 @@ TEST_USERS = {
     },
     "multiple_products": {
         "username": "33430151562",
+        "password": "Claro@122"
+    },
+    "mobile_sim_del_one_line_active": {
+        "username": "42972451163",
         "password": "Claro@122"
     }
 }

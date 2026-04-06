@@ -7,6 +7,7 @@ def menu_client(auth_data):
 
 @pytest.fixture
 def menu_response(menu_client, auth_data):
+
     response = menu_client.get_menu(
         auth_data["customer_id"], 
         auth_data["product_id"])
