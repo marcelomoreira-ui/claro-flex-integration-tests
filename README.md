@@ -9,6 +9,18 @@ This project contains automated integration tests for the Claro Flex platform AP
 - pip (Python package installer)
 - Virtualenv (for creating isolated Python environments)
 
+## Recommended VS Code Extensions
+
+If you are using VS Code, the following extensions help maintain consistency and improve productivity in this project:
+
+- `Python` (Microsoft) — provides IntelliSense, debugging, linting, and test discovery.
+- `Pylance` (Microsoft) — enhances Python language support with fast type checking and code navigation.
+- `Pytest` (Little Fox Team) — enables running and debugging pytest tests directly from VS Code.
+- `JSON Tools` or `JSON Language Features` — helps with editing and validating `config/environments/*.json` files.
+- `GitLens` — assists with repository history and code annotation, useful for collaborative review.
+
+> Having these extensions installed makes it easier to run tests, edit configs, and understand code changes across the project.
+
 ## Project Setup
 
 ### 1. Clone the Repository
@@ -111,6 +123,11 @@ Tests run with verbose output (`-v`) and logging enabled. Check the console for 
 - `pytest.ini`: Pytest settings.
 - `requirements.txt`: Python dependencies.
 - `run.sh`: Shell script for running tests in SIT environment.
+
+## Architecture Overview
+
+The diagram below shows how the main project components connect:
+![Project Architecture](imagens/project_architecture.png)
 
 ## Key Concepts
 
