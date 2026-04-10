@@ -21,9 +21,6 @@ class AuthClient:
         self.logger.info("🔐 Starting authentication process")
         self.session.cookies.clear()
 
-        # DEBUG
-        # print("Cookies antes:", self.session.cookies.get_dict())
-
         code_verifier, code_challenge = generate_pkce()
 
         # Step 1 - Flow ID
@@ -42,11 +39,12 @@ class AuthClient:
 
         response = self.session.get(url, params=params)
 
-        self.logger.debug("✔ Flow ID")
-        self.logger.debug("Status: %d", response.status_code)
-        self.logger.debug("Response: %s", response.text)
+        if response.status_code != 200:
+            self.logger.error("❌ Failed to initiate authentication flow for user '%s'", username)
+            self.logger.error("Status: %d", response.status_code)
+            self.logger.error("Response: %s", response.text)
+            return []
 
-        response.raise_for_status()
 
         flow_id = response.json()["id"]
 
@@ -68,11 +66,14 @@ class AuthClient:
 
         response = self.session.post(url, json=payload, headers=headers)
 
-        # DEBUG
+        if response.status_code != 200:
+            self.logger.error("❌ Authentication failed for user '%s'", username)
+            self.logger.error("Status: %d", response.status_code)
+            self.logger.error("Response: %s", response.text)
+            return []
+    
+
         self.logger.debug("✔ Authorization Code")
-        self.logger.debug("Status: %d", response.status_code)
-        self.logger.debug("Response: %s", response.text)
-        response.raise_for_status()
 
         code = response.json()["authorizeResponse"]["code"]
 
@@ -100,11 +101,11 @@ class AuthClient:
 
         response = self.session.post(url, json=payload, headers=headers)
 
-        # DEBUG
-        self.logger.info("✔ Finished authentication process")
-        self.logger.debug("Status: %d", response.status_code)
-        self.logger.debug("Response: %s", response.text)
-        response.raise_for_status()
+        if response.status_code != 200:
+            self.logger.error("❌ Token exchange failed for user '%s'", username)
+            self.logger.error("Status: %d", response.status_code)
+            self.logger.error("Response: %s", response.text)
+            return []
 
         token = response.headers.get("x-access-token")
 

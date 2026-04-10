@@ -1,5 +1,4 @@
 import pytest
-from clients.menu_client import MenuClient
 from fixtures.schemas.menu_schema import menu_schema
 from jsonschema import Draft7Validator
 from helper import menu_helper as menu_helper

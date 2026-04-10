@@ -2,11 +2,9 @@ import pytest
 from clients.menu_client import MenuClient
 
 @pytest.fixture
-def menu_client(auth_data):
-    return MenuClient(auth_data["token"])
+def menu_response(auth_data):
 
-@pytest.fixture
-def menu_response(menu_client, auth_data):
+    menu_client = MenuClient(auth_data["token"])
 
     response = menu_client.get_menu(
         auth_data["customer_id"], 

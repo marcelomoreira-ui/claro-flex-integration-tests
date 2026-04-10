@@ -14,7 +14,12 @@ def auth_data(request):
 
     client = AuthClient()
 
-    return client.get_token(
+    client_data = client.get_token(
         username=user["username"],
         password=user["password"]
     )
+
+    if not client_data:
+        pytest.exit(f"Authentication failed for user '{user_key}'")
+
+    return client_data
