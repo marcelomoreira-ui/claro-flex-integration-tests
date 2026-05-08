@@ -1,6 +1,5 @@
 import pytest
 from fixtures.schemas.menu_schema import menu_schema
-from jsonschema import Draft7Validator
 from helper import menu_helper as menu_helper
 from utils.logger import get_logger
 
@@ -17,10 +16,8 @@ def test_menu_should_match_schema(auth_data, menu_response):
     response = menu_response
 
     response_json = response.json()
-    validator = Draft7Validator(menu_schema)
-    errors = sorted(validator.iter_errors(response_json), key=lambda e: e.path)
-    print(f"Validation errors: {[e.message for e in errors]}")
-    assert not errors, f"Schema validation errors: {[e.message for e in errors]}"
+
+    menu_helper.assert_schema_validation(response_json, menu_schema)
 
 # TESTS
 @pytest.mark.integration
