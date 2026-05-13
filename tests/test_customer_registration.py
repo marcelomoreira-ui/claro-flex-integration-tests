@@ -7,13 +7,13 @@ logger = get_logger(__name__)
 
 #TESTS
 @pytest.mark.integration
-@pytest.mark.parametrize("auth_data", ["multiple_products"], indirect=True)
-def test_customer_should_match_schema(auth_data, customer_response):
+def test_customer_should_match_schema(customer_registration_response):
     """"
     Test to verify that the /customer registration endpoint response matches the expected schema.
     """
     logger.info("Testing customer schema validation")
-    response = customer_response
+
+    response = customer_registration_response(invalid_cpf=False, custom_email=None)
 
     response_json = response.json()
 

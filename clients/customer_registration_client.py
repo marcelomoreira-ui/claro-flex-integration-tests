@@ -3,9 +3,8 @@ from config.settings import config
 
 class CustomerRegistrationClient:
     
-    def __init__(self, token=None):
+    def __init__(self):
         self.base_url = config["base_url"]
-        self.token = token
 
     def register_customer(self, customer_data: dict) -> requests.Response:
         url = f"{self.base_url}/ext-application/v3/customer/registration"
