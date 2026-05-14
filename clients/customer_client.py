@@ -1,7 +1,7 @@
 import requests
 from config.settings import config
 
-class CustomerRegistrationClient:
+class CustomerClient:
     
     def __init__(self):
         self.base_url = config["base_url"]

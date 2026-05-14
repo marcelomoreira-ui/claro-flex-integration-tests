@@ -1,12 +1,12 @@
 import pytest
-from clients.customer_registration_client import CustomerRegistrationClient
+from clients.customer_client import CustomerClient
 from builders.customer_builder import CustomerBuilder
 
 @pytest.fixture
 def customer_registration_response():
     def _make_customer(invalid_cpf=False, custom_email=None, underage_birthdate=False):
 
-        customer_registration_client = CustomerRegistrationClient()
+        customer_registration_client = CustomerClient()
 
         builder = CustomerBuilder()
 
