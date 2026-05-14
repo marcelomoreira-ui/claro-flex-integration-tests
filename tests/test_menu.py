@@ -2,6 +2,7 @@ import pytest
 from fixtures.schemas.menu_schema import menu_schema
 from helper import menu_helper as menu_helper
 from utils.logger import get_logger
+from utils.json_validator import assert_schema_validation 
 
 logger = get_logger(__name__)
 
@@ -17,7 +18,7 @@ def test_menu_should_match_schema(auth_data, menu_response):
 
     response_json = response.json()
 
-    menu_helper.assert_schema_validation(response_json, menu_schema)
+    assert_schema_validation(response_json, menu_schema)
 
 # TESTS
 @pytest.mark.integration
