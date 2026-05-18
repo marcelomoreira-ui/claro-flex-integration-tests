@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export ENV=sit
-pytest -m integration -v 
+export ENV=local
+pytest -m wip2 -v 

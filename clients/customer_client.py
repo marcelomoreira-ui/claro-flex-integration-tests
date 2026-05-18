@@ -18,5 +18,8 @@ class CustomerClient:
         }
     
         response = requests.post(url, json=customer_data, headers=headers)
-    
-        return response
+
+        if response.status_code in [200, 201, 400]:
+            return response
+        else:
+            raise Exception(f"Failed to register customer: {response.status_code}, Response: {response.text}")
