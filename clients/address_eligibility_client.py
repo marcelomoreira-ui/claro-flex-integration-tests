@@ -25,8 +25,8 @@ class AddressEligibilityClient:
 
         response = requests.post(url, headers=headers, json=payload)
 
-        if response.status_code == 201:
-            return response.json()
+        if response.status_code in [200, 201, 400]:
+            return response
         else:
             raise Exception(
                 f"Failed to check address eligibility: {response.status_code} - {response.text}"
