@@ -3,9 +3,10 @@ from clients.customer_client import CustomerClient
 from builders.customer_builder import CustomerBuilder
 from config.settings import config
 from clients.wiremock_client import WireMockClient
+from mappings import customer_mappings as cm
 
 @pytest.fixture(scope="function")
-def customer_registration_response(request):
+def customer_registration_response():
 
     # Initialize clients
     customer_registration_client = CustomerClient()
@@ -23,11 +24,16 @@ def customer_registration_response(request):
             builder.with_underage_birthdate()
 
         customer_data = builder.build()
-        print(f"Customer data being sent for registration: {customer_data}")  # Debug print
         
         if current_env == "local":
-            wiremock_client.update_mappings(cpf=customer_data["user"]["document"])
-            print(f"WireMock mapping updated for CPF: {customer_data['user']['document']}")  # Debug print
+            if invalid_cpf:
+                mapping = cm.get_unsuccess_mapping()
+            elif underage_birthdate:
+                mapping = cm.get_underage_mapping()
+            else:
+                mapping = cm.get_success_mapping(cpf=customer_data["user"]["document"])
+
+            wiremock_client.create_mappings(mapping)
 
         response = customer_registration_client.register_customer(customer_data=customer_data)
 

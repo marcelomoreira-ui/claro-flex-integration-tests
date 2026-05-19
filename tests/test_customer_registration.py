@@ -6,7 +6,8 @@ from utils.json_validator import assert_schema_validation
 logger = get_logger(__name__)
 
 #TESTS
-@pytest.mark.wip
+@pytest.mark.integration
+@pytest.mark.customer_registration
 def test_customer_should_match_schema(customer_registration_response):
     """"
     FLXRED-1436 - ID: 13 - [BACKEND][INTEGRAÇÃO] Persistência Completa Salesforce e Criação de Basket
@@ -17,11 +18,10 @@ def test_customer_should_match_schema(customer_registration_response):
 
     response_json = response.json()
 
-    print(f"Customer registration response JSON: {response_json}")  # Debug print
-
     assert_schema_validation(response_json, customer_schema)
 
-@pytest.mark.wip
+@pytest.mark.integration
+@pytest.mark.customer_registration
 def test_customer_registration_with_invalid_cpf(customer_registration_response):
     """"
     FLXRED-1424 - ID: 01 - [BACKEND][CADASTRO] Validar rejeição de CPF inválido ou sequencial
@@ -32,7 +32,8 @@ def test_customer_registration_with_invalid_cpf(customer_registration_response):
 
     assert response.status_code == 400, f"Expected status code 400 for invalid CPF, got {response.status_code}"
 
-@pytest.mark.wip
+@pytest.mark.integration
+@pytest.mark.customer_registration
 def test_customer_registration_with_under_eighteen_years_old(customer_registration_response):
     """"
     FLXRED-1427 - ID: 04 - [BACKEND][CADASTRO] Restrição de Idade Mínima (Menor de 18 anos)
