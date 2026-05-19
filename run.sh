@@ -1,4 +1,4 @@
 #!/bin/bash
 
 export ENV=local
-pytest -m wip -v 
+pytest -m customer_registration -v 
