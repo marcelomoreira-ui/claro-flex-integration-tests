@@ -61,9 +61,9 @@ class CustomerBuilder:
         return self
     
     def with_underage_birthdate(self):
-        self.customer_data["user"]["birthDate"] = fake.date_of_birth(
-            tzinfo=None, minimum_age=0, maximum_age=17
-        ).isoformat()
+        self.customer_data["user"]["document"] = "12345678911"
+        self.customer_data["credential"]["document"] = "12345678911"
+        self.customer_data["user"]["birthDate"] = fake.date_of_birth(tzinfo=None, minimum_age=17, maximum_age=17).isoformat()
         return self
 
     def build(self):
