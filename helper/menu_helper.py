@@ -37,10 +37,3 @@ def assert_itens_present(actual_itens: list, expected_itens: list):
     assert not missing_itens, (
         f"Missing items: {missing_itens}"
         f"Available items: {actual_itens}")
-
-# Assertion helper to validate the response JSON against the provided schema
-def assert_schema_validation(response_json: dict, schema: dict):
-    validator = Draft7Validator(schema)
-    errors = sorted(validator.iter_errors(response_json), key=lambda e: e.path)
-    print(f"Validation errors: {[e.message for e in errors]}")
-    assert not errors, f"Schema validation errors: {[e.message for e in errors]}"
