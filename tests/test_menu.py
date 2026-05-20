@@ -8,6 +8,7 @@ logger = get_logger(__name__)
 
 #TESTS
 @pytest.mark.integration
+@pytest.mark.menu
 @pytest.mark.parametrize("auth_data", ["multiple_products"], indirect=True)
 def test_menu_should_match_schema(auth_data, menu_response):
     """"
@@ -22,6 +23,7 @@ def test_menu_should_match_schema(auth_data, menu_response):
 
 # TESTS
 @pytest.mark.integration
+@pytest.mark.menu
 @pytest.mark.parametrize("auth_data", ["mobile_sim_del_one_line_active"], indirect=True)
 def test_menu_should_contain_expected_sections_mobile(auth_data, menu_response):
     """"
@@ -39,6 +41,7 @@ def test_menu_should_contain_expected_sections_mobile(auth_data, menu_response):
     menu_helper.assert_section_not_present(menu_helper.get_section_ids(response_json), not_expected_items)
 
 @pytest.mark.integration
+@pytest.mark.menu
 @pytest.mark.parametrize("auth_data", ["mobile_sim_del_one_line_active"], indirect=True)
 def test_menu_should_contain_expected_item_broadband(auth_data, menu_response):
     """"
@@ -54,7 +57,7 @@ def test_menu_should_contain_expected_item_broadband(auth_data, menu_response):
 
 #TESTS
 @pytest.mark.integration
-@pytest.mark.building
+@pytest.mark.menu
 @pytest.mark.parametrize("auth_data", ["default"], indirect=True)
 def test_menu_should_contain_expected_sections_mobile_bl(auth_data, menu_response):
     """"
